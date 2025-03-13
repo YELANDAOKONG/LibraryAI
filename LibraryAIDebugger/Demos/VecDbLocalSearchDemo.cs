@@ -30,9 +30,22 @@ public class VecDbLocalSearchDemo
         db.EnsureCreated();
 
         Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("[?] Input Search:");
+        Console.WriteLine("[?] Input Search: (@EOF)");
         Console.ResetColor();
-        var inputData = Console.ReadLine();
+        // var inputData = Console.ReadLine();
+        var inputData = "";
+        while (true)
+        {
+            var line = Console.ReadLine();
+            if (line != null && line.Equals("@EOF"))
+            {
+                break;
+            }
+            else
+            {
+                inputData += line + "\n";
+            }
+        }
         
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine("[%] Start Chunking...");
