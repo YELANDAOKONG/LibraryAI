@@ -1,6 +1,7 @@
 ﻿using System.ClientModel;
 using Azure.AI.OpenAI;
 using LibAI.Core;
+using LibAI.Tools;
 using OpenAI;
 using OpenAI.Chat;
 
@@ -17,11 +18,13 @@ class Program
         );
 
         var models = service.GetOpenAIModelClient().GetModels();
-        Console.WriteLine(models.Value.Count);
-        foreach (var model in models.Value)
-        {
-            Console.WriteLine($"{model.Id}, {model.CreatedAt}, {model.OwnedBy}");
-        }
+        Console.WriteLine($"Got Models: {models.Value.Count}");
+        // foreach (var model in models.Value)
+        // {
+        //     Console.WriteLine($"{model.Id}, {model.CreatedAt}, {model.OwnedBy}");
+        // }
+        
+        TestChunkTools();
         
         // var chat = service.GetChatClient("Qwen/Qwen2.5-7B-Instruct");
         // // var data = chat.CompleteChat(new AssistantChatMessage("You are a helpful robot."), new UserChatMessage("Hello, World!"));
@@ -47,5 +50,38 @@ class Program
         // }
 
 
+    }
+    
+    
+    public static void TestChunkTools()
+    {
+        var file = Environment.GetEnvironmentVariable("FILE");
+        if (file == null)
+        {
+            // throw new Exception("FILE environment variable not set");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("% FILE environment variable not set");
+            Console.ResetColor();
+            return;
+        }
+        
+        void PrintChunk(string chunk)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"% Got chunk: ");
+            Console.ResetColor();
+            Console.WriteLine(chunk);
+        }
+        
+        using var fs = File.OpenRead(file);
+        var chunker = new ChunkTools(
+            fs,
+            chunkSize: 1024,
+            chunkOverlap: 256,
+            chunkCallback: chunk => PrintChunk(chunk)
+        );
+        chunker.Chunk();
+        Console.WriteLine("% Done");
+        Console.ResetColor();
     }
 }
