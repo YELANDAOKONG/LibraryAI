@@ -16,4 +16,9 @@ public class VectorDbContextFactory
     {
         VectorDbContext.Init();
     }
+
+    public static void EnsureCreated(VectorDbContext dbContext)
+    {
+        dbContext.EnsureCreated();
+    }
 }

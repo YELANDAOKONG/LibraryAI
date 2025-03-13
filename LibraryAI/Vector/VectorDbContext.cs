@@ -30,10 +30,14 @@ public class VectorDbContext : DbContext
         //     .HasConversion(
         //         v => JsonSerializer.Serialize(v, JsonOptions),
         //         v => JsonSerializer.Deserialize<float[]>(v, JsonOptions) ?? Array.Empty<float>());
+        // builder.Property(e => e.Embedding)
+        //     .HasConversion(
+        //         v => VectorSerializer.SerializeString(v),
+        //         v => VectorSerializer.DeserializeString(v) ?? Array.Empty<float>());
         builder.Property(e => e.Embedding)
             .HasConversion(
-                v => VectorSerializer.SerializeString(v),
-                v => VectorSerializer.DeserializeString(v) ?? Array.Empty<float>());
+                v => VectorSerializer.Serialize(v),
+                v => VectorSerializer.Deserialize(v) ?? Array.Empty<float>());
     }
 
     private static DbContextOptionsBuilder<VectorDbContext> GetOptionsBuilder(string dbPath)
