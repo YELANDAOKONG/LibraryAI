@@ -11,4 +11,9 @@ public class VectorDbContextFactory
             .Options;
         return new VectorDbContext(options);
     }
+    
+    public static void Init()
+    {
+        VectorDbContext.Init();
+    }
 }

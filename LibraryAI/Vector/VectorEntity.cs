@@ -13,5 +13,8 @@ public class VectorEntity
     [Required]
     public required float[] Embedding { get; set; }
     
+    [Required]
+    public required string Text { get; set; }
+    
     public string? Metadata { get; set; }
 }

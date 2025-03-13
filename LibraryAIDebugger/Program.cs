@@ -2,6 +2,7 @@
 using Azure.AI.OpenAI;
 using LibraryAI.Core;
 using LibraryAI.Tools;
+using LibraryAIDebugger.Demos;
 using OpenAI;
 using OpenAI.Chat;
 
@@ -24,7 +25,8 @@ class Program
         //     Console.WriteLine($"{model.Id}, {model.CreatedAt}, {model.OwnedBy}");
         // }
         
-        TestChunkTools();
+        // TestChunkTools();
+        VecDbDemo.Run();
         
         // var chat = service.GetChatClient("Qwen/Qwen2.5-7B-Instruct");
         // // var data = chat.CompleteChat(new AssistantChatMessage("You are a helpful robot."), new UserChatMessage("Hello, World!"));
