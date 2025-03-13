@@ -22,6 +22,8 @@ public class VectorDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<VectorEntity>(ConfigureVectorEntity);
+        // modelBuilder.Entity<VectorEntity>()
+        //     .HasKey(e => new { e.VectorId, e.Embedding });
     }
 
     private static void ConfigureVectorEntity(EntityTypeBuilder<VectorEntity> builder)

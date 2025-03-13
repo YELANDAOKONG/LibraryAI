@@ -58,6 +58,8 @@ public class VecDbLocalDemo
         db.EnsureCreated();
         
         int counter = 0;
+        long tokenCounter = 0;
+        long ptokenCounter = 0;
         void ChunkHandler(string chunk)
         {
             counter++;
@@ -76,7 +78,15 @@ public class VecDbLocalDemo
             JsonElement vector = outputAsJson.RootElement
                 .GetProperty("data"u8)[0]
                 .GetProperty("embedding"u8);
-
+            JsonElement tokenUsage = outputAsJson.RootElement
+                .GetProperty("usage"u8)
+                .GetProperty("total_tokens"u8);
+            JsonElement ptokenUsage = outputAsJson.RootElement
+                .GetProperty("usage"u8)
+                .GetProperty("prompt_tokens"u8);
+            tokenCounter += tokenUsage.GetInt32();
+            ptokenCounter += ptokenUsage.GetInt32();
+            
             var embedData = new float[vector.GetArrayLength()];
             int embedCounter = 0;
             foreach (JsonElement element in vector.EnumerateArray())
@@ -93,7 +103,7 @@ public class VecDbLocalDemo
                 Text = chunk,
                 Metadata = "",
             });
-            Console.WriteLine($"[^] Chunk Handler (In Chunk {counter}): {chunk.Length} -> {embedData.Length}");
+            Console.WriteLine($"[^] Chunk Handler (In Chunk {counter}): {chunk.Length} -> {embedData.Length} : {tokenCounter} / {ptokenCounter}");
             db.SaveChanges();
         }
         
