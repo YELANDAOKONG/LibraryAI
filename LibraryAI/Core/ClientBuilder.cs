@@ -1,7 +1,7 @@
 ﻿using System.ClientModel;
 using OpenAI;
 
-namespace LibAI.Core;
+namespace LibraryAI.Core;
 
 public class ClientBuilder
 {

@@ -1,4 +1,4 @@
-﻿namespace LibAI;
+﻿namespace LibraryAI;
 
 public class DefaultClass
 {

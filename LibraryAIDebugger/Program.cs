@@ -1,11 +1,11 @@
 ﻿using System.ClientModel;
 using Azure.AI.OpenAI;
-using LibAI.Core;
-using LibAI.Tools;
+using LibraryAI.Core;
+using LibraryAI.Tools;
 using OpenAI;
 using OpenAI.Chat;
 
-namespace LibAIDebugger;
+namespace LibraryAIDebugger;
 
 class Program
 {

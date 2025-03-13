@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAI", "LibAI\LibAI.csproj", "{00CEC6F8-E3B0-49EB-9817-A52C3362CB4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAI", "LibraryAI\LibraryAI.csproj", "{00CEC6F8-E3B0-49EB-9817-A52C3362CB4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAI", "ConsoleAI\ConsoleAI.csproj", "{83CAEAE1-9E88-42E8-A2E8-867D97B38236}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibAIDebugger", "LibAIDebugger\LibAIDebugger.csproj", "{E583CE97-DF03-40DA-B2FB-EF0B22D03FF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAIDebugger", "LibraryAIDebugger\LibraryAIDebugger.csproj", "{E583CE97-DF03-40DA-B2FB-EF0B22D03FF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

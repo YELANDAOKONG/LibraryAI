@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace LibAI.Tools;
+namespace LibraryAI.Tools;
 
 public class ChunkTools
 {
