@@ -64,9 +64,12 @@ class Program
             Console.ResetColor();
             return;
         }
+
+        int chunks = 0;
         
         void PrintChunk(string chunk)
         {
+            chunks++;
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"% Got chunk: ");
             Console.ResetColor();
@@ -81,7 +84,8 @@ class Program
             chunkCallback: chunk => PrintChunk(chunk)
         );
         chunker.Chunk();
-        Console.WriteLine("% Done");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine($"% Done: Got {chunks} Chunks");
         Console.ResetColor();
     }
 }
