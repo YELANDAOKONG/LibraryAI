@@ -1,5 +1,4 @@
 ﻿using System.ClientModel;
-using Azure.AI.OpenAI;
 using LibraryAI.Core;
 using LibraryAI.Tools;
 using LibraryAIDebugger.Demos;
@@ -13,13 +12,13 @@ class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Hello, World!");
-        var service = ClientBuilder.Build(
-            "https://api.siliconflow.cn/v1/",
-            Environment.GetEnvironmentVariable("KEY")!
-        );
+        // var service = ClientBuilder.Build(
+        //     "https://api.siliconflow.cn/v1/",
+        //     Environment.GetEnvironmentVariable("KEY")!
+        // );
 
-        var models = service.GetOpenAIModelClient().GetModels();
-        Console.WriteLine($"Got Models: {models.Value.Count}");
+        // var models = service.GetOpenAIModelClient().GetModels();
+        // Console.WriteLine($"Got Models: {models.Value.Count}");
         // foreach (var model in models.Value)
         // {
         //     Console.WriteLine($"{model.Id}, {model.CreatedAt}, {model.OwnedBy}");
@@ -27,7 +26,8 @@ class Program
         
         // TestChunkTools();
         // VecDbDemo.Run();
-        ChunkDemo.Run();
+        // ChunkDemo.Run();
+        VecDbLocalDemo.Run();
         
         // var chat = service.GetChatClient("Qwen/Qwen2.5-7B-Instruct");
         // // var data = chat.CompleteChat(new AssistantChatMessage("You are a helpful robot."), new UserChatMessage("Hello, World!"));
