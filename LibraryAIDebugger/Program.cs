@@ -26,7 +26,8 @@ class Program
         // }
         
         // TestChunkTools();
-        VecDbDemo.Run();
+        // VecDbDemo.Run();
+        ChunkDemo.Run();
         
         // var chat = service.GetChatClient("Qwen/Qwen2.5-7B-Instruct");
         // // var data = chat.CompleteChat(new AssistantChatMessage("You are a helpful robot."), new UserChatMessage("Hello, World!"));
