@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Tools\" />
       <Folder Include="Utils\" />
     </ItemGroup>
 
