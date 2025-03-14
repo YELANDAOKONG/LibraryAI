@@ -17,30 +17,42 @@ public class ChunkHandler
         var validFiles = options.InputFiles.Where(File.Exists).ToList();
         var invalidFiles = options.InputFiles.Except(validFiles).ToList();
 
-        AnsiConsole.MarkupLine($"[bold]Input Summary:[/]");
-        AnsiConsole.MarkupLine($"[green]* Valid files: {validFiles.Count}[/]");
-        AnsiConsole.MarkupLine($"[red]* Invalid files: {invalidFiles.Count}[/]");
+        AnsiConsole.Write(new Rule("[yellow]Input Summary[/]").LeftJustified());
+        AnsiConsole.MarkupLine($"[green]✓ Valid files  : {validFiles.Count}[/]");
+        AnsiConsole.MarkupLine($"[red]✗ Invalid files: {invalidFiles.Count}[/]");
 
         if (invalidFiles.Any())
         {
-            AnsiConsole.MarkupLine("\n[yellow]Invalid files:[/]");
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("[yellow]Invalid files:[/]");
             foreach (var file in invalidFiles)
             {
-                AnsiConsole.MarkupLine($"[red]  - {Markup.Escape(file)}[/]");
+                AnsiConsole.MarkupLine($"[red]  • {Markup.Escape(file)}[/]");
             }
         }
 
         if (validFiles.Count == 0)
         {
-            AnsiConsole.MarkupLine("[red]No valid files to process. Exiting.[/]");
+            AnsiConsole.MarkupLine("\n[red]╳ No valid files to process. Exiting.[/]");
             return 1;
         }
 
-        AnsiConsole.MarkupLine($"\n[bold]Starting to process {validFiles.Count} file(s)...[/]\n");
+        AnsiConsole.WriteLine();
+        AnsiConsole.MarkupLine($"[bold]► Starting to process {validFiles.Count} file(s)...[/]");
 
         long maxId = db.Vectors.Any() ? db.Vectors.Max(v => v.Id) : 0;
 
         AnsiConsole.Progress()
+            .AutoClear(false)
+            .HideCompleted(false)
+            .Columns(new ProgressColumn[]
+            {
+                new TaskDescriptionColumn(),
+                new ProgressBarColumn(),
+                new PercentageColumn(),
+                new RemainingTimeColumn(),
+                new SpinnerColumn(),
+            })
             .Start(ctx => 
             {
                 var overallTask = ctx.AddTask("[green]Overall progress[/]", maxValue: validFiles.Count);
@@ -65,7 +77,7 @@ public class ChunkHandler
                 }
             });
         
-        AnsiConsole.MarkupLine("\n[bold green]Processing completed successfully![/]");
+        AnsiConsole.MarkupLine("\n[bold green]✔ Processing completed successfully![/]");
         return 0;
     }
 
