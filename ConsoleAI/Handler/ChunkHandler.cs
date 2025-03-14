@@ -45,7 +45,7 @@ public class ChunkHandler
         long maxId = db.Vectors.Any() ? db.Vectors.Max(v => v.Id) : 0;
 
         AnsiConsole.Progress()
-            .AutoClear(false)
+            .AutoClear(true)
             .HideCompleted(false)
             .AutoRefresh(true)
             .Columns(new ProgressColumn[]
@@ -62,7 +62,11 @@ public class ChunkHandler
 
                 foreach (var file in validFiles)
                 {
-                    var fileTask = ctx.AddTask($"[blue]{Path.GetFileName(file)}[/]", maxValue: 100);
+                    var fileName = Path.GetFileName(file);
+                    if (fileName.Length > 36) 
+                        fileName = $"{fileName.Substring(0, 33)}...";
+
+                    var fileTask = ctx.AddTask($"[blue]{Markup.Escape(fileName)}[/]", maxValue: 100);
                     
                     using var fs = File.OpenRead(file);
                     ChunkHandler handler = new ChunkHandler(db, file, fileTask, maxId + 1);
