@@ -10,8 +10,6 @@ public class ChunkHandler
 {
     public static int RunHandler(ChunkOptions options)
     {
-        Console.Clear();
-        
         VectorDbContext.Init();
         var db = VectorDbContextFactory.Create(options.DatabaseFile);
         db.EnsureCreated();
@@ -93,6 +91,7 @@ public class ChunkHandler
     public string FilePath;
     public ProgressTask FileTask;
     public long TotalFileSize;
+    public long ProcessedFileSize = 0;
     
     public ChunkHandler(VectorDbContext dbContext, string filePath, ProgressTask fileTask, long startId)
     {
@@ -106,6 +105,7 @@ public class ChunkHandler
     public void TextChunkHandler(string chunk)
     {
         MaxId++;
+        ProcessedFileSize += chunk.Length;
         DbContext.Vectors.Add(new VectorEntity
         {
             Id = MaxId,
@@ -117,8 +117,10 @@ public class ChunkHandler
             Metadata = null,
         });
         
-        long processedSize = MaxId * chunk.Length;
-        double progress = (double)processedSize / TotalFileSize * 100;
+        // long processedSize = MaxId * chunk.Length;
+        // double progress = (double)processedSize / TotalFileSize * 100;
+        // FileTask.Value = Math.Min(progress, 99);
+        double progress = (double)ProcessedFileSize / TotalFileSize * 100;
         FileTask.Value = Math.Min(progress, 99);
         
         DbContext.SaveChanges();
