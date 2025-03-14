@@ -69,7 +69,7 @@ public class ChunkHandler
                     var fileTask = ctx.AddTask($"[blue]{Markup.Escape(fileName)}[/]", maxValue: 100);
 
                     var sourcesId = SearchMaxSourcesId(db);
-                    var fileGuid = $"FILE:{sourcesId}:" + GuidUtils.GetFormattedGuid();
+                    var fileGuid = $"FILE:{sourcesId + 1}:" + GuidUtils.GetFormattedGuid();
                     if (options.IncludeFiles)
                     {
                         byte[] fileData = File.ReadAllBytes(file);
