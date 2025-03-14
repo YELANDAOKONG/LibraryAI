@@ -28,7 +28,7 @@
 
     <ItemGroup>
       <Folder Include="Chunk\" />
-      <Folder Include="Utils\" />
+      <Folder Include="Vector\Objects\" />
     </ItemGroup>
 
 </Project>

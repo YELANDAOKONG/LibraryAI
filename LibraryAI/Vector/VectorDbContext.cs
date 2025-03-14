@@ -14,6 +14,7 @@ public class VectorDbContext : DbContext
     };
 
     public DbSet<VectorEntity> Vectors { get; set; }
+    public DbSet<SourcesEntity> Sources { get; set; }
     
     public VectorDbContext(DbContextOptions<VectorDbContext> options) : base(options) { }
     
@@ -22,6 +23,7 @@ public class VectorDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<VectorEntity>(ConfigureVectorEntity);
+        modelBuilder.Entity<SourcesEntity>(ConfigureSourcesEntity);
         // modelBuilder.Entity<VectorEntity>()
         //     .HasKey(e => new { e.VectorId, e.Embedding });
     }
@@ -40,6 +42,11 @@ public class VectorDbContext : DbContext
             .HasConversion(
                 v => VectorSerializer.Serialize(v),
                 v => VectorSerializer.Deserialize(v) ?? Array.Empty<float>());
+    }
+
+    private static void ConfigureSourcesEntity(EntityTypeBuilder<SourcesEntity> builder)
+    {
+        
     }
 
     private static DbContextOptionsBuilder<VectorDbContext> GetOptionsBuilder(string dbPath)

@@ -3,6 +3,8 @@ using LibraryAI.Tools;
 using LibraryAI.Vector;
 using Spectre.Console;
 using System.Linq;
+using LibraryAI.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsoleAI.Handler;
 
@@ -65,9 +67,25 @@ public class ChunkHandler
                         fileName = $"{fileName.Substring(0, 33)}...";
 
                     var fileTask = ctx.AddTask($"[blue]{Markup.Escape(fileName)}[/]", maxValue: 100);
+
+                    var sourcesId = SearchMaxSourcesId(db);
+                    var fileGuid = $"FILE:{sourcesId}:" + GuidUtils.GetFormattedGuid();
+                    if (options.IncludeFiles)
+                    {
+                        byte[] fileData = File.ReadAllBytes(file);
+                        db.Sources.Add(new()
+                        {
+                            // Id = sourcesId + 1,
+                            Status = (int)SourcesStatus.Normal,
+                            Title = Path.GetFileName(file),
+                            SourcesId = fileGuid,
+                            Data = fileData,
+                        });
+                        db.SaveChanges();
+                    }
                     
                     using var fs = File.OpenRead(file);
-                    ChunkHandler handler = new ChunkHandler(db, file, fileTask, maxId + 1);
+                    ChunkHandler handler = new ChunkHandler(options, db, file, fileTask, maxId + 1, fileGuid);
                     var chunker = new ChunkTools(
                         fs,
                         chunkSize: options.ChunkSize,
@@ -86,34 +104,62 @@ public class ChunkHandler
         return 0;
     }
 
+    public static long SearchMaxId(VectorDbContext db)
+    {
+        return db.Vectors.Any() ? db.Vectors.Max(v => v.Id) : 0;
+    }
+    
+    public static long SearchMaxSourcesId(VectorDbContext db)
+    {
+        return db.Sources.Any() ? db.Sources.Max(v => v.Id) : 0;
+    }
+
+    public ChunkOptions POptions;
     public long MaxId;
     public VectorDbContext DbContext;
     public string FilePath;
     public ProgressTask FileTask;
     public long TotalFileSize;
     public long ProcessedFileSize = 0;
+    public string? SourcesId;
+    public long ChunkCounter = 0;
     
-    public ChunkHandler(VectorDbContext dbContext, string filePath, ProgressTask fileTask, long startId)
+    public ChunkHandler(ChunkOptions options, VectorDbContext dbContext, string filePath, ProgressTask fileTask, long startId, string sourcesId)
     {
+        POptions = options;
         DbContext = dbContext;
         FilePath = filePath;
         FileTask = fileTask;
         TotalFileSize = new FileInfo(filePath).Length;
         MaxId = startId - 1;
+        SourcesId = sourcesId;
     }
 
     public void TextChunkHandler(string chunk)
     {
         MaxId++;
+        ChunkCounter++;
         ProcessedFileSize += chunk.Length;
+        
+        string? sourcesId = POptions.IncludeFiles ? SourcesId : null;
+        var sourcesStatus = POptions.IncludeFiles ? (int)SourcesStatus.Normal : (int)SourcesStatus.Incomplete;
+        long? sourcesIndex = POptions.IncludeFiles ? ChunkCounter : null;
+        long? sourcesPosition = POptions.IncludeFiles ? ProcessedFileSize : null;
+        
+        
         DbContext.Vectors.Add(new VectorEntity
         {
-            Id = MaxId,
-            Status = 1,
-            VectorId = $"CHUNK:{MaxId}",
+            // Id = MaxId,
+            Status = (int)VectorStatus.Unprocessed,
+            // VectorId = $"CHUNK:{MaxId}",
+            VectorId = $"CHUNK:{MaxId}:" + GuidUtils.GetFormattedGuid(),
             Embedding = [],
             Text = chunk,
             Sources = Path.GetFileName(FilePath),
+            SourcesId = sourcesId,
+            SourcesStatus = sourcesStatus,
+            SourcesIndex = sourcesIndex,
+            SourcesPosition = sourcesPosition,
             Metadata = null,
         });
         
