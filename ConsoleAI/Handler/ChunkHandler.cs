@@ -84,8 +84,8 @@ public class ChunkHandler
     public long MaxId;
     public VectorDbContext DbContext;
     public string FilePath;
-    private ProgressTask FileTask;
-    private long TotalFileSize;
+    public ProgressTask FileTask;
+    public long TotalFileSize;
     
     public ChunkHandler(VectorDbContext dbContext, string filePath, ProgressTask fileTask, long startId)
     {
