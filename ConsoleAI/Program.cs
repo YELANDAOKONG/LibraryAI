@@ -1,9 +1,22 @@
-﻿namespace ConsoleAI;
+﻿using CommandLine;
+using ConsoleAI.Handler;
+using ConsoleAI.Options;
+using Microsoft.Extensions.Options;
+
+namespace ConsoleAI;
 
 class Program
 {
-    static void Main(string[] args)
+    public static int Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        var exitCode = Parser.Default.ParseArguments<
+                ChunkOptions
+            >(args)
+            .MapResult(
+                (ChunkOptions o) => ChunkHandler.RunHandler(o),
+                error => 1
+            );
+        
+        return exitCode;
     }
 }
