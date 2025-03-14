@@ -16,8 +16,7 @@ class Program
                 new FigletText("Console AI")
                     .LeftJustified()
                     .Color(Color.Cyan1));
-
-            throw new Exception("Test");
+            
             var exitCode = Parser.Default.ParseArguments<ChunkOptions>(args)
                 .MapResult(
                     (ChunkOptions o) => ChunkHandler.RunHandler(o),
