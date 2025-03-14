@@ -10,6 +10,8 @@ public class ChunkHandler
 {
     public static int RunHandler(ChunkOptions options)
     {
+        Console.Clear();
+        
         VectorDbContext.Init();
         var db = VectorDbContextFactory.Create(options.DatabaseFile);
         db.EnsureCreated();
@@ -45,6 +47,7 @@ public class ChunkHandler
         AnsiConsole.Progress()
             .AutoClear(false)
             .HideCompleted(false)
+            .AutoRefresh(true)
             .Columns(new ProgressColumn[]
             {
                 new TaskDescriptionColumn(),
