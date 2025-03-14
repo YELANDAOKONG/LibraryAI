@@ -18,8 +18,8 @@ public class ChunkHandler
         var invalidFiles = options.InputFiles.Except(validFiles).ToList();
 
         AnsiConsole.Write(new Rule("[yellow]Input Summary[/]").LeftJustified());
-        AnsiConsole.MarkupLine($"[green]✓ Valid files  : {validFiles.Count}[/]");
-        AnsiConsole.MarkupLine($"[red]✗ Invalid files: {invalidFiles.Count}[/]");
+        AnsiConsole.MarkupLine($"[green]* Valid files  : {validFiles.Count}[/]");
+        AnsiConsole.MarkupLine($"[red]* Invalid files: {invalidFiles.Count}[/]");
 
         if (invalidFiles.Any())
         {
@@ -27,18 +27,18 @@ public class ChunkHandler
             AnsiConsole.MarkupLine("[yellow]Invalid files:[/]");
             foreach (var file in invalidFiles)
             {
-                AnsiConsole.MarkupLine($"[red]  • {Markup.Escape(file)}[/]");
+                AnsiConsole.MarkupLine($"[red]  - {Markup.Escape(file)}[/]");
             }
         }
 
         if (validFiles.Count == 0)
         {
-            AnsiConsole.MarkupLine("\n[red]╳ No valid files to process. Exiting.[/]");
+            AnsiConsole.MarkupLine("\n[red][[!]] No valid files to process. Exiting.[/]");
             return 1;
         }
 
         AnsiConsole.WriteLine();
-        AnsiConsole.MarkupLine($"[bold]► Starting to process {validFiles.Count} file(s)...[/]");
+        AnsiConsole.MarkupLine($"[bold]=> Starting to process {validFiles.Count} file(s)...[/]");
 
         long maxId = db.Vectors.Any() ? db.Vectors.Max(v => v.Id) : 0;
 
@@ -77,7 +77,7 @@ public class ChunkHandler
                 }
             });
         
-        AnsiConsole.MarkupLine("\n[bold green]✔ Processing completed successfully![/]");
+        AnsiConsole.MarkupLine("\n[bold green][[%]] Processing completed successfully![/]");
         return 0;
     }
 
