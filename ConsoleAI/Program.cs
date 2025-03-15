@@ -21,12 +21,14 @@ class Program
             var exitCode = Parser.Default.ParseArguments<
                     ChunkOptions,
                     VectorOptions,
-                    VectorOptionsMultithreaded
+                    VectorOptionsMultithreaded,
+                    SearchOptions
                 >(args)
                 .MapResult(
                     (ChunkOptions o) => ChunkHandler.RunHandler(o),
                     (VectorOptions o) => VectorHandler.RunHandler(o),
                     (VectorOptionsMultithreaded o) => VectorHandlerMultithreaded.RunHandler(o),
+                    (SearchOptions o) => SearchHandler.RunHandler(o),
                     errors => HandleParseError(errors)
                 );
             
