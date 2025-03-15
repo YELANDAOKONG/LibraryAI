@@ -19,4 +19,7 @@ public class ChunkOptionsMultithreaded
     
     [Option("include-files", Required = false, HelpText = "Include files to database.")] // -f
     public bool IncludeFiles { get; set; } = false;
+    
+    [Option('p', "max-degree-of-parallelism", Required = false, HelpText = "Max degree of parallelism. Default is 3.")]
+    public int MaxDegreeOfParallelism { get; set; } = 3;
 }

@@ -19,7 +19,7 @@ class Program
                     .Color(Color.Cyan1));
             
             var exitCode = Parser.Default.ParseArguments<
-                    ChunkOptions, 
+                    ChunkOptions,
                     VectorOptions,
                     VectorOptionsMultithreaded
                 >(args)

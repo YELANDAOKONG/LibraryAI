@@ -9,16 +9,14 @@ namespace ConsoleAI.Handler;
 
 public class ChunkHandlerMultithreaded
 {
-    private static readonly object DbLock = new();
-    
     public static int RunHandler(ChunkOptionsMultithreaded options)
     {
         VectorDbContext.Init();
-        using var mainDb = VectorDbContextFactory.Create(options.DatabaseFile);
-        mainDb.EnsureCreated();
+        var db = VectorDbContextFactory.Create(options.DatabaseFile);
+        db.EnsureCreated();
         
         throw new NotImplementedException();
-        return 0;
+        return 1;
     }
 
     public static long SearchMaxId(VectorDbContext db)
@@ -30,4 +28,5 @@ public class ChunkHandlerMultithreaded
     {
         return db.Sources.Any() ? db.Sources.Max(v => v.Id) : 0;
     }
+    
 }
