@@ -14,7 +14,7 @@ public class ChunkOptions
     [Option( "chunk-size", Required = false, HelpText = "Chunk size. Default 1024.")] // -s
     public int ChunkSize { get; set; } = 1024;
     
-    [Option( "chunk-overlap", Required = false, HelpText = "Chunk overlap. Default 512.")] // -o
+    [Option( "chunk-overlap", Required = false, HelpText = "Chunk overlap. Default 256.")] // -o
     public int ChunkOverlap { get; set; } = 256;
     
     [Option("include-files", Required = false, HelpText = "Include files to database.")] // -f
