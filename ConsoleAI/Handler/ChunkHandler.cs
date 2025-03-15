@@ -20,8 +20,9 @@ public class ChunkHandler
         var invalidFiles = options.InputFiles.Except(validFiles).ToList();
 
         AnsiConsole.Write(new Rule("[yellow]Input Summary[/]").LeftJustified());
-        AnsiConsole.MarkupLine($"[green]* Valid files  : {validFiles.Count}[/]");
-        AnsiConsole.MarkupLine($"[red]* Invalid files: {invalidFiles.Count}[/]");
+        AnsiConsole.MarkupLine($"[green]* Valid files : {validFiles.Count}[/]");
+        AnsiConsole.MarkupLine($"[red]* Invalid files : {invalidFiles.Count}[/]");
+        AnsiConsole.MarkupLine($"[yellow]* Chunk Params : {options.ChunkSize} / {options.ChunkOverlap}[/]");
 
         if (invalidFiles.Any())
         {
