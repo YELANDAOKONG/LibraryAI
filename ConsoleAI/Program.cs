@@ -58,7 +58,7 @@ class Program
         AnsiConsole.MarkupLine("[bold red][[#]] Full Stack Trace:[/]");
         
         AnsiConsole.Write(
-            new Panel(ex.ToString())
+            new Panel(Markup.Escape(ex.ToString()))
                 .Expand()
                 .BorderColor(Color.Red)
                 .RoundedBorder()

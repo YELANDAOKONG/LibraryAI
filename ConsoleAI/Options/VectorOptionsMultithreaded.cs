@@ -21,5 +21,8 @@ public class VectorOptionsMultithreaded
     public bool Compatibility { get; set; } = false;
     
     [Option('p', "max-degree-of-parallelism", Required = false, HelpText = "Max degree of parallelism. Default is 5.")]
-    public int MaxDegreeOfParallelism { get; set; } = 5;
+    public int MaxDegreeOfParallelism { get; set; } = 2;
+    
+    [Option('b', "batch-size", Required = false, HelpText = "Batch size. Default is 50.")]
+    public int BatchSize { get; set; } = 50;
 }

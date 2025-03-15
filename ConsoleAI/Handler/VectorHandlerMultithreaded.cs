@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using ConsoleAI.Options;
+using LibraryAI.Core;
 using LibraryAI.Tools;
 using LibraryAI.Vector;
 using OpenAI.Embeddings;
@@ -39,7 +40,7 @@ public class VectorHandlerMultithreaded
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine($"[bold]=> Starting to process {pendingVectors.Count} vector(s)...[/]");
         
-        // 使用线程安全的字典存储处理结果
+        var batches = pendingVectors.Chunk(options.BatchSize);
         var embeddingsDict = new ConcurrentDictionary<long, float[]>();
         
         AnsiConsole.Progress()
@@ -57,45 +58,55 @@ public class VectorHandlerMultithreaded
             })
             .Start(ctx =>
             {
-                var mainTask = ctx.AddTask("[deepskyblue1]Processing vectors[/]", 
+                var mainTask = ctx.AddTask("[deepskyblue1]Processing vectors[/]",
                     new ProgressTaskSettings { MaxValue = pendingVectors.Count });
-                // 设置最大并行度
-                var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = options.MaxDegreeOfParallelism };
-                
-                Parallel.ForEach(pendingVectors, parallelOptions, vector =>
+                var parallelOptions = new ParallelOptions
                 {
-                    var text = vector.Text;
-                    var embedding = VectorTools.Generate(
-                        options.OpenAiApiEndpoint,
+                    MaxDegreeOfParallelism = options.MaxDegreeOfParallelism
+                };
+
+                Parallel.ForEach(batches, parallelOptions, batch =>
+                {
+                    // 准备批量数据
+                    var batchTexts = batch.Select(v => v.Text).ToList();
+
+                    // 批量生成嵌入
+                    var batchResult = VectorTools.Generate(
+                        options.OpenAiApiEndpoint, 
                         options.ApiKey,
-                        text,
-                        options.EmbeddingModel,
-                        null,
-                        true,
-                        options.Compatibility
+                        data: batchTexts,
+                        model: options.EmbeddingModel,
+                        throwExceptions: true,
+                        compatibility: options.Compatibility
                     );
-                    
-                    if (embedding.Item1 != null)
+                    if (batchResult.Item1?.Count == batch.Length)
                     {
-                        embeddingsDict.TryAdd(vector.Id, embedding.Item1);
+                        // 关联结果与原始数据
+                        for (int i = 0; i < batch.Length; i++)
+                        {
+                            var vector = batch[i];
+                            var embedding = batchResult.Item1[i];
+                            embeddingsDict.TryAdd(vector.Id, embedding);
+                        }
                     }
                     else
                     {
-                        AnsiConsole.MarkupLine($"[red][[!]] Failed to process vector {vector.Id}![/]");
+                        AnsiConsole.MarkupLine($"[red][[!]] Batch failed (Size: {batch.Length})[/]");
                     }
-                    
-                    mainTask.Increment(1); // 进度条线程安全
+
+                    mainTask.Increment(batch.Length);
                 });
+                
                 // 批量更新数据库
-                foreach (var vector in pendingVectors)
+                var vectorsToUpdate = pendingVectors
+                    .Where(v => embeddingsDict.ContainsKey(v.Id))
+                    .ToList();
+                // db.BulkUpdate(vectorsToUpdate);
+                foreach (var chunk in vectorsToUpdate.Chunk(1000))
                 {
-                    if (embeddingsDict.TryGetValue(vector.Id, out var embedding))
-                    {
-                        vector.Embedding = embedding;
-                        vector.Status = (int)VectorStatus.Normal;
-                    }
+                    db.UpdateRange(chunk);
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
             });
     
         AnsiConsole.MarkupLine("\n[bold green][[%]] Vector processing completed![/]");
