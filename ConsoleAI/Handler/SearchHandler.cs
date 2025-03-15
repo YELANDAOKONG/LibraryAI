@@ -67,20 +67,43 @@ public class SearchHandler
         var startTime = DateTime.Now;
         var resultIds = new Dictionary<long, double>();
         var normalVectors = db.Vectors.Where(x => x.Status == (int)VectorStatus.Normal);
-        foreach (var vector in normalVectors.AsEnumerable())
+        // foreach (var vector in normalVectors.AsEnumerable())
+        // {
+        //     searchCounter++;
+        //     var distance = VectorComparer.CosineSimilarity(embedding.Item1, vector.Embedding);
+        //     if (distance > options.MatchThreshold)
+        //     {
+        //         resultIds.Add(vector.Id, distance);
+        //         findCounter++;
+        //     }
+        //     // if (resultIds.Count >= options.TopN)
+        //     // {
+        //     //     break;
+        //     // }
+        // }
+        var totalVectors = normalVectors.Count();
+        var progress = AnsiConsole.Progress()
+            .AutoClear(false)
+            .HideCompleted(false);
+        progress.Start(ctx =>
         {
-            searchCounter++;
-            var distance = VectorComparer.CosineSimilarity(embedding.Item1, vector.Embedding);
-            if (distance > options.MatchThreshold)
+            var task = ctx.AddTask("[green]Processing vectors[/]", maxValue: totalVectors);
+            foreach (var vector in normalVectors.AsEnumerable())
             {
-                resultIds.Add(vector.Id, distance);
-                findCounter++;
+                searchCounter++;
+                var distance = VectorComparer.CosineSimilarity(embedding.Item1, vector.Embedding);
+                if (distance > options.MatchThreshold)
+                {
+                    resultIds.Add(vector.Id, distance);
+                    findCounter++;
+                }
+                task.Increment(1);
+                // if (resultIds.Count >= options.TopN)
+                // {
+                //     break;
+                // }
             }
-            // if (resultIds.Count >= options.TopN)
-            // {
-            //     break;
-            // }
-        }
+        });
         
         if (resultIds.Count == 0)
         {
