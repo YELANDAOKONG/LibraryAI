@@ -18,9 +18,13 @@ class Program
                     .LeftJustified()
                     .Color(Color.Cyan1));
             
-            var exitCode = Parser.Default.ParseArguments<ChunkOptions>(args)
+            var exitCode = Parser.Default.ParseArguments<
+                    ChunkOptions, 
+                    VectorOptions
+                >(args)
                 .MapResult(
                     (ChunkOptions o) => ChunkHandler.RunHandler(o),
+                    (VectorOptions o) => VectorHandler.RunHandler(o),
                     errors => HandleParseError(errors)
                 );
             
