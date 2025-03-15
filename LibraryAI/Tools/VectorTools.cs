@@ -100,12 +100,82 @@ public class VectorTools
         }
         catch (Exception e)
         {
-            if (throwExceptions)
-            {
-                throw;
-            }
-
+            if (throwExceptions)throw;
             return (null, null);
         }
     }
+    
+    
+    public static (List<float[]>?, PipelineResponse?) Generate(
+        string apiEndpoint,
+        string key,
+        List<string> data, 
+        string model,
+        EmbeddingGenerationOptions? options = null, 
+        bool throwExceptions = false, 
+        bool compatibility = false)
+    {
+        return Generate(ClientBuilder.Build(apiEndpoint, key), data, model, options, throwExceptions, compatibility);
+    }
+    
+    public static (List<float[]>?, PipelineResponse?) Generate(
+        OpenAIClient client, 
+        List<string> data, 
+        string model,
+        EmbeddingGenerationOptions? options = null, 
+        bool throwExceptions = false, 
+        bool compatibility = false)
+    {
+        return GenerateBatch(client.GetEmbeddingClient(model), data, model, options, throwExceptions, compatibility);
+    }
+    
+    public static (List<float[]>?, PipelineResponse?) GenerateBatch(
+        EmbeddingClient client,
+        List<string> batchData,
+        string model,
+        EmbeddingGenerationOptions? options = null,
+        bool throwExceptions = false,
+        bool compatibility = false)
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(client);
+            ArgumentNullException.ThrowIfNull(batchData);
+            if (batchData.Count == 0) return (null, null);
+
+            BinaryData input = BinaryData.FromObjectAsJson(new
+            {
+                model = model,
+                input = batchData,
+                encoding_format = "float"
+            });
+        
+            using BinaryContent content = BinaryContent.Create(input);
+            var result = client.GenerateEmbeddings(content);
+            BinaryData output = result.GetRawResponse().Content;
+        
+            using JsonDocument outputAsJson = JsonDocument.Parse(output.ToString());
+            var embeddings = new List<float[]>();
+        
+            foreach (JsonElement item in outputAsJson.RootElement.GetProperty("data"u8).EnumerateArray())
+            {
+                JsonElement vector = item.GetProperty("embedding"u8);
+                var floats = new float[vector.GetArrayLength()];
+                int index = 0;
+                foreach (JsonElement element in vector.EnumerateArray())
+                {
+                    floats[index++] = (float)element.GetDouble();
+                }
+                embeddings.Add(floats);
+            }
+        
+            return (embeddings, result.GetRawResponse());
+        }
+        catch (Exception e)
+        {
+            if (throwExceptions) throw;
+            return (null, null);
+        }
+    }
+
 }

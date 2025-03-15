@@ -20,11 +20,13 @@ class Program
             
             var exitCode = Parser.Default.ParseArguments<
                     ChunkOptions, 
-                    VectorOptions
+                    VectorOptions,
+                    VectorOptionsMultithreaded
                 >(args)
                 .MapResult(
                     (ChunkOptions o) => ChunkHandler.RunHandler(o),
                     (VectorOptions o) => VectorHandler.RunHandler(o),
+                    (VectorOptionsMultithreaded o) => VectorHandlerMultithreaded.RunHandler(o),
                     errors => HandleParseError(errors)
                 );
             
@@ -42,7 +44,7 @@ class Program
         AnsiConsole.MarkupLine("[bold red]Command line argument errors:[/]");
         foreach (var error in errors)
         {
-            AnsiConsole.MarkupLine($"[red]  • {error.Tag}[/]");
+            AnsiConsole.MarkupLine($"[red]  - {Markup.Escape(error.Tag.ToString())}[/]");
         }
         return 1;
     }
