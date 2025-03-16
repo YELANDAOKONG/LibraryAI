@@ -1,6 +1,7 @@
 ﻿using System.ClientModel;
 using LibraryAI.Core;
 using LibraryAI.Tools;
+using LibraryAI.Vector;
 using LibraryAIDebugger.Demos;
 using OpenAI;
 using OpenAI.Chat;
@@ -11,6 +12,14 @@ class Program
 {
     static void Main(string[] args)
     {
+        
+        VectorDbContext.Init();
+        VectorDbContext.Init();
+        VectorDbContext.Init();
+        
+        Console.WriteLine("Hello, World!");
+        
+        return;
         Console.WriteLine("Hello, World!");
         var service = ClientBuilder.Build(
             "https://api.siliconflow.cn/v1/",

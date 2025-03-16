@@ -28,6 +28,7 @@
 
     <ItemGroup>
       <Folder Include="Chunk\" />
+      <Folder Include="Clients\" />
       <Folder Include="Vector\Objects\" />
     </ItemGroup>
 
