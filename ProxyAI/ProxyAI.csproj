@@ -14,4 +14,9 @@
       <ProjectReference Include="..\LibraryAI\LibraryAI.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\Requests\" />
+      <Folder Include="Models\Responses\" />
+    </ItemGroup>
+
 </Project>
