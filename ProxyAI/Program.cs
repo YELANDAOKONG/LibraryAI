@@ -1,4 +1,3 @@
-
 namespace ProxyAI;
 
 public class Program
@@ -15,20 +14,24 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
-
+        
+        { // Middlewares
+            
+        }
+        { // Core Middlewares
+            
+        }
+        
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        
         app.UseHttpsRedirection();
-
         app.UseAuthorization();
-
         app.MapControllers();
-
         app.Run();
     }
 }

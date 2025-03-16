@@ -1,4 +1,4 @@
-namespace ProxyAI;
+namespace ProxyAI.Models.Responses;
 
 public class WeatherForecast
 {
