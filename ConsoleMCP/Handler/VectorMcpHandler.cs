@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using ConsoleMCP.Options;
+using ConsoleMCP.Services;
 using LibraryAI.Tools;
 using LibraryAI.Vector;
 using McpDotNet;
@@ -16,6 +17,10 @@ public class VectorMcpHandler
         VectorDbContext.Init();
         var db = VectorDbContextFactory.Create(options.DatabaseFile);
         db.EnsureCreated();
+        
+        VectorSearchService.Database = db;
+        VectorSearchService.CommandOptions = options;
+        VectorSearchService.IsInitialized = true;
         
         var builder = Host.CreateEmptyApplicationBuilder(settings: null);
         builder.Services

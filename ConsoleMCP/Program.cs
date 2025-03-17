@@ -11,7 +11,6 @@ class Program
 {
     public static int Main(string[] args)
     {
-        Console.Clear();
         try
         {
             var exitCode = Parser.Default.ParseArguments<
