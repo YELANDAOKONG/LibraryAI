@@ -1,4 +1,4 @@
-namespace ConsoleMCP.Models.Responses;
+namespace ConsoleWebMCP.Models.Responses;
 
 public class WeatherForecast
 {

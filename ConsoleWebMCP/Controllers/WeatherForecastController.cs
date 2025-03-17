@@ -1,7 +1,7 @@
-using ConsoleMCP.Models.Responses;
+using ConsoleWebMCP.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConsoleMCP.Controllers;
+namespace ConsoleWebMCP.Controllers;
 
 [ApiController]
 [Route("[controller]")]

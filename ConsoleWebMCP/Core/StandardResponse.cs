@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace ConsoleMCP.Core;
+namespace ConsoleWebMCP.Core;
 
 [Serializable]
 public class StandardResponse

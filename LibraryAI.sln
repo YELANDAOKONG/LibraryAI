@@ -8,7 +8,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAIDebugger", "Librar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyAI", "ProxyAI\ProxyAI.csproj", "{5B9E8559-D180-4547-93D3-883ABAF10B45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleMCP", "ConsoleMCP\ConsoleMCP.csproj", "{C32A2588-BA1A-40B8-ACA0-CBC2A77739DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWebMCP", "ConsoleWebMCP\ConsoleWebMCP.csproj", "{C32A2588-BA1A-40B8-ACA0-CBC2A77739DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleMCP", "ConsoleMCP\ConsoleMCP.csproj", "{7D9D5689-AFBB-477C-A501-54A3EC9ACFCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +38,9 @@ Global
 		{C32A2588-BA1A-40B8-ACA0-CBC2A77739DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C32A2588-BA1A-40B8-ACA0-CBC2A77739DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C32A2588-BA1A-40B8-ACA0-CBC2A77739DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9D5689-AFBB-477C-A501-54A3EC9ACFCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9D5689-AFBB-477C-A501-54A3EC9ACFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9D5689-AFBB-477C-A501-54A3EC9ACFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9D5689-AFBB-477C-A501-54A3EC9ACFCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
