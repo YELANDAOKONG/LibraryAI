@@ -7,4 +7,26 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="mcpdotnet" Version="1.1.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="Spectre.Console" Version="0.49.1" />
+      <PackageReference Include="Spectre.Console.Cli" Version="0.49.1" />
+      <PackageReference Include="Spectre.Console.Json" Version="0.49.1" />
+      <PackageReference Include="Spectre.Console.Testing" Version="0.49.1" />
+      <PackageReference Include="System.Text.Json" Version="9.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Config\" />
+      <Folder Include="Tools\" />
+      <Folder Include="Utils\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LibraryAI\LibraryAI.csproj" />
+    </ItemGroup>
+
 </Project>
