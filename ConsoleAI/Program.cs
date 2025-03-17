@@ -3,6 +3,7 @@ using ConsoleAI.Handler;
 using ConsoleAI.Options;
 using Spectre.Console;
 using System;
+using ConsoleAI.Handler.McpServices;
 
 namespace ConsoleAI;
 
@@ -22,13 +23,15 @@ class Program
                     ChunkOptions,
                     VectorOptions,
                     VectorOptionsMultithreaded,
-                    SearchOptions
+                    SearchOptions,
+                    McpServiceOptions
                 >(args)
                 .MapResult(
                     (ChunkOptions o) => ChunkHandler.RunHandler(o),
                     (VectorOptions o) => VectorHandler.RunHandler(o),
                     (VectorOptionsMultithreaded o) => VectorHandlerMultithreaded.RunHandler(o),
                     (SearchOptions o) => SearchHandler.RunHandler(o),
+                    (McpServiceOptions o) => McpServiceHandler.RunHandler(o),
                     errors => HandleParseError(errors)
                 );
             
