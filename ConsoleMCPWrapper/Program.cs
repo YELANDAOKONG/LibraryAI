@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 class Program
@@ -40,6 +41,32 @@ class Program
                     RedirectStandardError = true,
                     CreateNoWindow = true
                 };
+
+                
+                var encoding = Environment.GetEnvironmentVariable("CONSOLE_ENCODING");
+                if (!string.IsNullOrEmpty(encoding))
+                {
+                    try
+                    {
+                        targetInfo.StandardInputEncoding = 
+                            targetInfo.StandardOutputEncoding =
+                            targetInfo.StandardErrorEncoding = Encoding.GetEncoding(encoding);
+                    }
+                    catch
+                    {
+                        logWriter.WriteLine($"[ERROR] Invalid encoding: {encoding}");
+                        logWriter.WriteLine($"[ERROR] Fallback to default encoding: {Console.OutputEncoding.EncodingName}");
+                    }
+                }
+
+                else
+                {
+                    targetInfo.StandardInputEncoding = Console.InputEncoding;
+                    targetInfo.StandardOutputEncoding = Console.OutputEncoding;
+                    targetInfo.StandardErrorEncoding = Console.OutputEncoding;
+                }
+                
+                
 
                 using Process targetProcess = new Process { StartInfo = targetInfo };
                 
