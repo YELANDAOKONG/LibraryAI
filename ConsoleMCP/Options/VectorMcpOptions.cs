@@ -15,7 +15,7 @@ public class VectorMcpOptions
     public string ApiKey { get; set; } = "lm-studio";
     
     [Option('m', "embedding-model", Required = true, HelpText = "Embedding model." )]
-    public string EmbeddingModel { get; set; } = "text-embedding-bge-m3@f16";
+    public string EmbeddingModel { get; set; } = "text-embedding-bge-m3@q4_k_s";
     
     [Option('c', "compatibility", Required = false, HelpText = "Compatibility mode. Default is false.")]
     public bool Compatibility { get; set; } = false;
@@ -25,10 +25,4 @@ public class VectorMcpOptions
     
     [Option('n', "top-n", Required = false, HelpText = "Top N results. Default is 10.")]
     public int TopN { get; set; } = 10;
-    
-    [Option('l', "listen-address", Required = false, HelpText = "Listen address. Default is \"127.0.0.1\"." )]
-    public string ListenAddress { get; set; } = "127.0.0.1";
-    
-    [Option('p', "listen-port", Required = false, HelpText = "Listen port. Default is 1234." )]
-    public int ListenPort { get; set; } = 1235;
 }

@@ -15,7 +15,7 @@ public class SearchOptions
     public string ApiKey { get; set; } = "lm-studio";
     
     [Option('m', "embedding-model", Required = true, HelpText = "Embedding model." )]
-    public string EmbeddingModel { get; set; } = "text-embedding-bge-m3@f16";
+    public string EmbeddingModel { get; set; } = "text-embedding-bge-m3@q4_k_s";
     
     [Option('c', "compatibility", Required = false, HelpText = "Compatibility mode. Default is false.")]
     public bool Compatibility { get; set; } = false;
