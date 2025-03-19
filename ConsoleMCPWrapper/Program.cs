@@ -4,9 +4,11 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-class Program
+namespace ConsoleMCPWrapper;
+
+public static class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         if (args.Length < 1)
         {
@@ -92,7 +94,7 @@ class Program
                 {
                     while (!targetProcess.HasExited)
                     {
-                        string input = Console.ReadLine();
+                        string? input = Console.ReadLine();
                         if (input == null) break;
                         
                         try
